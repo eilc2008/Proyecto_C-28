@@ -11,6 +11,8 @@ var mango1,mango2,mango3,mango4,mango5,mango6,mango7,mango8,mango9,mango10,mango
 var world,boy;
 
 //Declara aquí las variables launcherObject y launchForce
+var launcherObject
+var launchForce = 100;
 
 
 function preload(){
@@ -39,8 +41,10 @@ function setup() {
 
 	treeObj=new tree(1050,580);
 	groundObject=new ground(width/2,600,width,20);
-  //crea aquí el launcherObject 
 
+  //crea aquí el launcherObject 
+  launcherObject = new Launcher(stoneObj.body,{x:235,y:420});
+  launcherObject.debug;
 
 	Engine.run(engine);
 }
@@ -70,7 +74,9 @@ function draw() {
   stoneObj.display();
   groundObject.display();
   // muestra el objeto lanzador aquí
-    
+  launcherObject.display();
+
+  keyPressed();
 
 
   detectollision(stoneObj,mango1);
@@ -88,12 +94,24 @@ function draw() {
 }
 
 //crea aquí la función mouseDragged
+function mouseDragged(){
+  Matter.Body.setPosition(stoneObj.body,{x:mouseX,y:mouseY});
+}
 
 
 //crea aquí la función mouseReleased 
+function mouseReleased(){
+  launcherObject.fly();
+}
 
 
 //crea aquí la función keyPressed 
+function keyPressed(){
+  if(keyDown("SPACE")){
+    Matter.Body.setPosition(stoneObj.body, {x:235,y:420});
+    launcherObject.attach(stoneObj.body);
+  }
+}
 
 
   function detectollision(lstone,lmango){
